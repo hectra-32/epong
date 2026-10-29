@@ -19,6 +19,7 @@
 #include <time.h>
 
 #include "font.h"
+#include "splash.h"
 
 typedef struct {
 	unsigned int p1;
@@ -179,6 +180,9 @@ int main(void) {
 
 	bool paused = true;
 	bool started = false;
+	bool colided = false;
+
+	int which_splash = 0;
 
 	float mouse_x = 0.0f;
 	float mouse_y = 0.0f;
@@ -310,6 +314,7 @@ int main(void) {
 				inc_speed(&box_vx, &box_vy);
 				if (change_box_color)
 					change_color(&box_color);
+				colided = true;
 			}
 
 			if (box.x + box.w < 0.0f) {
@@ -354,10 +359,15 @@ int main(void) {
 					change_color(&box_color);
 
 				inc_speed(&box_vx, &box_vy);
+				colided = true;
 			}
 		}
 
 		game_over = check(&pc, &paused);
+
+		if (colided) {
+			which_splash = rand() % SPLASH_COUNT;
+		}
 
 		// Draw
 		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
@@ -409,9 +419,25 @@ int main(void) {
 			draw_text(ren, font, msg, ((float)screen_w - text_w) / 2.0f,
 					  ((float)screen_h - text_h) / 2.0f);
 		}
+
+		int splash_w, splash_h;
+
+		if (!TTF_GetStringSize(font, splash[which_splash],
+							   strlen(splash[which_splash]), &splash_w,
+							   &splash_h)) {
+			fprintf(stderr, "Text measurement failed: %s\n", SDL_GetError());
+		}
+
+		splash_w *= 0.5f;
+		splash_h *= 0.5f;
+
+		draw_text(ren, font, splash[which_splash],
+				  (float)screen_w / 2 - splash_w, 15.0f);
+
 		SDL_RenderPresent(ren);
 
 		frame++;
+		colided = false;
 	}
 	SDL_DestroyRenderer(ren);
 	SDL_DestroyWindow(win);
