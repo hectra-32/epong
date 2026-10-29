@@ -1,4 +1,9 @@
-# compiled binary
-epong
-# .o files
+# Object File
 *.o
+
+# Executable
+epong
+
+# IDE
+.clangd
+.clang-format
