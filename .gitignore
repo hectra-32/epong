@@ -1,0 +1,4 @@
+# compiled binary
+epong
+# .o files
+*.o
