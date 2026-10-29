@@ -57,8 +57,8 @@ void increase_speed_r(float *x, float *y) {
 }
 
 void inc_speed(float *x, float *y) {
-	*x += 25.0f;
-	*y += 25.0f;
+	*x += (*x > 0.0f) ? 25.0f : -25.0f;
+	*y += (*y > 0.0f) ? 25.0f : -25.0f;
 }
 
 void draw_text(SDL_Renderer *ren, TTF_Font *font, const char *text, float x,
