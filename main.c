@@ -3,6 +3,7 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_keycode.h>
+#include <SDL3/SDL_oldnames.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
@@ -208,6 +209,7 @@ int main(void) {
 	bool change_box_color = true;
 
 	bool game_over;
+	bool fullscreen = false;
 
 	DEFFUCUILTI defi = rand() % 6;
 
@@ -271,6 +273,17 @@ int main(void) {
 				case SDLK_D:
 					defi = (DEFFUCUILTI)(rand() % 6);
 					opp_speed = get_opp_speed(defi);
+					break;
+
+				case SDLK_F:
+					fullscreen = !fullscreen;
+					SDL_SetWindowFullscreen(win, fullscreen);
+					break;
+
+				case SDLK_R:
+					game_over = false;
+					pc.p1 = 0;
+					pc.p2 = 0;
 					break;
 				}
 			}
